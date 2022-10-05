@@ -60,10 +60,69 @@ Graphe* CreerGraphe(int ordre) {
     return Newgraphe;
 }
 
+Arrete* triArrete(Arrete* liste, int s1, int s2, int poids){
+    Arrete* temp = malloc(sizeof(Arrete));
+
+    temp->s1 = s1;
+    temp->s2 = s2;
+    temp->poids = poids;
+    temp->couleur = -1;
+    temp->next = NULL;
+
+    Arrete* parcours = liste;
+
+    if(liste == NULL){
+        liste = temp;
+        return liste;
+    } else if(liste->next == NULL){
+        if(liste->poids < temp->poids){
+            liste->next = temp;
+            return liste;
+        } else {
+            Arrete* tempListe = liste;
+            liste = temp;
+            temp->next = tempListe;
+            return liste;
+        }
+    } else {
+        while (parcours->next != NULL){
+            //Ajout en tête (et comparaison pour le 1er)
+            if(liste->poids > temp->poids){
+                Arrete* tempParcours = liste;
+                liste = temp;
+                temp->next = tempParcours;
+                return liste;
+            }
+            if(parcours->next->poids < temp->poids){
+                parcours = parcours->next;
+            } else {
+                temp->next = parcours->next;
+                parcours->next = temp;
+                return liste;
+            }
+        }
+
+        parcours->next = temp;
+        return liste;
+    }
+}
+
+void afficherListe(Arrete* liste){
+    Arrete* temp = liste;
+
+    while (temp != NULL){
+        printf("%d %d %d\n", temp->s1, temp->s2, temp->poids);
+
+        temp = temp->next;
+    }
+
+}
+
 
 /* La construction du reseau peut se faire a partir d'un fichier dont le nom est passe en parametre
 Le fichier contient : ordre, taille,orientation (0 ou 1)et liste des arcs */
-Graphe* lire_graphe(char *nomFichier) {
+Graphe* lire_graphe(char *nomFichier, Arrete** liste) {
+    *liste = NULL;
     Graphe* graphe;
     FILE* ifs = fopen(nomFichier, "r");
     int taille, orientation, ordre, s1, s2, poids;
@@ -87,7 +146,7 @@ Graphe* lire_graphe(char *nomFichier) {
     for (int i = 0; i < taille; ++i) {
         fscanf(ifs, "%d%d%d", &s1, &s2, &poids);
         graphe->pSommet = CreerArete(graphe->pSommet, s1, s2, poids);
-
+        *liste = triArrete(*liste, s1, s2, poids);
         if (!orientation)
             graphe->pSommet = CreerArete(graphe->pSommet, s2, s1, poids);
     }
