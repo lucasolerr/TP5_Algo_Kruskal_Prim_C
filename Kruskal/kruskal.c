@@ -28,12 +28,6 @@ void kruskal(pSommet *graphe, Arrete *liste, int ordre, int *poidsTotal) {
 
 
     while (nbArretes < ordre - 1) {
-        for (int i = 0; i < compteur; i++) {
-            if (temp->next != NULL) {
-                temp = temp->next;
-            }
-        }
-
         if (graphe[temp->s1]->couleur != graphe[temp->s2]->couleur) {
             *poidsTotal += temp->poids;
             //Problème de couleur
@@ -46,12 +40,13 @@ void kruskal(pSommet *graphe, Arrete *liste, int ordre, int *poidsTotal) {
 
             }
             graphe[temp->s1]->couleur = graphe[temp->s2]->couleur;
+            nbArretes++;
 
         } else {
             temp->couleur = 0;
         }
         compteur++;
-        nbArretes++;
+        temp = temp->next;
     }
 
 
