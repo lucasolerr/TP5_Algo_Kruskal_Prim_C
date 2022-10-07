@@ -17,9 +17,14 @@ int main() {
     scanf(" %d", &choix);
 
     if(choix){
+        //On choisit de stocker dans une liste d'arête vide
+        freeListe(liste);
+        //La liste est vide
         liste = NULL;
+        //On lance prim
         liste = prim(g->pSommet, liste, g->ordre, &poidsTotal);
 
+        //Affichage de l'arbre
         afficherACPM(liste, poidsTotal);
     } else {
         //Appel de la fonction kruskal qui permet de simuler la création d'un arbre couvrant de poids minimum du graphe g
@@ -29,6 +34,7 @@ int main() {
         afficherACPM(liste, poidsTotal);
     }
 
+    //On libère l'arbre alloué dynamiquement
     freeListe(liste);
 
 
