@@ -21,6 +21,7 @@ pSommet *CreerArete(pSommet* sommet, int s1, int s2, int poids) {
         Newarc->sommet = s2;
         Newarc->arc_suivant = NULL;
         Newarc->valeur = poids;
+        Newarc->couleur = 0;
         sommet[s1]->arc = Newarc;
         return sommet;
     } else {
@@ -32,12 +33,15 @@ pSommet *CreerArete(pSommet* sommet, int s1, int s2, int poids) {
         Newarc->sommet = s2;
         Newarc->arc_suivant = NULL;
         Newarc->valeur = poids;
+        Newarc->couleur = 0;
 
         if (temp->sommet > s2) {
             Newarc->arc_suivant = temp->arc_suivant;
             Newarc->sommet = temp->sommet;
+            Newarc->couleur = 0;
             temp->sommet = s2;
             temp->valeur = poids;
+            temp->couleur = 0;
             temp->arc_suivant = Newarc;
             return sommet;
         }
@@ -174,5 +178,12 @@ void graphe_afficher(Graphe *graphe) {
 
 }
 
-
+void freeListe(Arrete* liste){
+    Arrete* temp = NULL;
+    while (liste != NULL){
+        temp = liste->next;
+        free(liste);
+        liste = temp;
+    }
+}
 

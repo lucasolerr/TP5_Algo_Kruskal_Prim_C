@@ -15,6 +15,7 @@ struct Arc
 {
     int sommet; // numero de sommet d'un arc adjacent au sommet initial
     int valeur;
+    int couleur;
     struct Arc* arc_suivant;
 };
 
@@ -63,5 +64,7 @@ void afficher_successeurs(pSommet * sommet, int num);
 void graphe_afficher(Graphe* graphe);
 
 void afficherListe(Arrete* liste);
+
+void freeListe(Arrete* liste);
 
 #endif // GRAPHE_H_INCLUDED
